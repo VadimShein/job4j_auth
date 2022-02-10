@@ -31,21 +31,21 @@ public class PersonControllerTest {
     @Test
     @WithMockUser
     public void shouldCreatePerson() throws Exception {
-        Mockito.when(persons.save(Mockito.any())).thenReturn(new Person(1, "User_1", "123"));
+        Mockito.when(persons.save(Mockito.any())).thenReturn(new Person(1, "User_1", "123", 1));
         this.mockMvc.perform(post("/person/")
                 .contentType("application/json")
-                .content("{\"login\":\"User_1\",\"password\":\"123\"}"))
+                .content("{\"login\":\"User_1\",\"password\":\"123\",\"employeeId\":1}"))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(content().string("{\"id\":1,\"login\":\"User_1\",\"password\":\"123\"}"));
+                .andExpect(content().string("{\"id\":1,\"login\":\"User_1\",\"password\":\"123\",\"employeeId\":1}"));
     }
 
     @Test
     @WithMockUser
     public void shouldReturnPersonById() throws Exception {
-        String expected = "{\"id\":1,\"login\":\"User_1\",\"password\":\"123\"}";
+        String expected = "{\"id\":1,\"login\":\"User_1\",\"password\":\"123\",\"employeeId\":1}";
         Mockito.when(persons.findById(Mockito.any()))
-                .thenReturn(Optional.of(new Person(1, "User_1", "123")));
+                .thenReturn(Optional.of(new Person(1, "User_1", "123", 1)));
         this.mockMvc.perform(get("/person/1"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -55,10 +55,10 @@ public class PersonControllerTest {
     @Test
     @WithMockUser
     public void shouldReturnAllPersons() throws Exception {
-        List<Person> listPersons = List.of(new Person(1, "User_1", "123"),
-                new Person(2, "User_2", "123"));
-        String expected = "[{\"id\":1,\"login\":\"User_1\",\"password\":\"123\"},"
-                + "{\"id\":2,\"login\":\"User_2\",\"password\":\"123\"}]";
+        List<Person> listPersons = List.of(new Person(1, "User_1", "123", 1),
+                new Person(2, "User_2", "123", 1));
+        String expected = "[{\"id\":1,\"login\":\"User_1\",\"password\":\"123\",\"employeeId\":1},"
+                + "{\"id\":2,\"login\":\"User_2\",\"password\":\"123\",\"employeeId\":1}]";
         Mockito.when(persons.findAll()).thenReturn(listPersons);
         this.mockMvc.perform(get("/person/"))
                 .andDo(print())
@@ -79,7 +79,7 @@ public class PersonControllerTest {
     public void shouldUpdatePerson() throws Exception {
         this.mockMvc.perform(put("/person/")
                 .contentType("application/json")
-                .content("{\"id\":1,\"login\":\"updateUser\",\"password\":\"123\"}"))
+                .content("{\"id\":1,\"login\":\"updateUser\",\"password\":\"123\",\"employeeId\":1}"))
                 .andDo(print())
                 .andExpect(status().isOk());
     }

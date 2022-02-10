@@ -1,9 +1,6 @@
 package ru.job4j.auth.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
@@ -13,14 +10,17 @@ public class Person {
     private int id;
     private String login;
     private String password;
+    @Column(name = "employee_id")
+    private int employeeId;
 
     public Person() {
     }
 
-    public Person(int id, String login, String password) {
+    public Person(int id, String login, String password, int employeeId) {
         this.id = id;
         this.login = login;
         this.password = password;
+        this.employeeId = employeeId;
     }
 
     public int getId() {
@@ -45,6 +45,14 @@ public class Person {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
     }
 
     @Override
